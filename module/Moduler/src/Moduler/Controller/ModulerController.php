@@ -5,6 +5,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 use Moduler\Form\ModulerForm;
+use Moduler\Model\Moduler;
 
 class ModulerController extends AbstractActionController {
 	protected $templatesDir;
@@ -18,12 +19,18 @@ class ModulerController extends AbstractActionController {
 		$form = new ModulerForm( 'moduler', $data );
 		$request = $this->getRequest();
 		if( $request->isPost() ) {
+			$moduler = new Moduler();
+			$form->bind( $moduler );
 			$form->setData( $request->getPost() );
 			if( $form->isValid() ) {
-				echo "Creating new module...";
-				echo "<pre>";
-				print_r( $form->getData() );
-				die();
+				// Verify module doesn't exist
+				if( is_dir( $moduler->getModuleDir() ) ) {
+					$form->get('csrf')->setMessages( array( 'exists' => 'Module already exists' ) );
+				} else {
+					echo "Creating new module...";
+					// Create module
+					// Activate module
+				}
 			}
 		}
 		return new ViewModel( array( 'form' => $form ) );
