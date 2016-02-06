@@ -18,7 +18,7 @@ class Moduler implements InputFilterAwareInterface {
 
 	public function exchangeArray( $data ) {
 		$this->template = isset( $data['template'] ) ? $data['template'] : null;
-		$this->name = isset( $data['name'] ) ? /*$data['name']*/ 'Moduler' : null;
+		$this->name = isset( $data['name'] ) ? $data['name'] : null;
 		$this->table = isset( $data['table'] ) ? $data['table'] : null;
 		$this->unit = isset( $data['unit'] ) ? $data['unit'] : null;
 		$this->project = isset( $data['project'] ) ? $data['project'] : null;
