@@ -1,3 +1,7 @@
 <?php
+$form->prepare();
+echo $this->form()->openTag( $form );
 $elements = array( 'template', 'name', 'table', 'unit', 'project', 'csrf', 'build' );
 echo $this->renderElements( $form, $elements );
+?>
+</form>
