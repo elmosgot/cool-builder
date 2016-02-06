@@ -1,0 +1,11 @@
+<?php
+namespace Form\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+
+class FormController extends AbstractActionController {
+	public function indexAction() {
+
+	}
+}
