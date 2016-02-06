@@ -31,8 +31,8 @@ class ModulerController extends AbstractActionController {
 				} else {
 					$buildLog[] = "Creating new module...";
 					// Create module
-					$builder = new Builder( $moduler, $this->getTemplatesDir(), $buildLog );
-					$builder->buildModule();
+					$builder = new Builder( $moduler, $this->getTemplatesDir() );
+					$buildLog = array_merge( $buildLog, $builder->buildModule() );
 					// Activate module
 				}
 			}

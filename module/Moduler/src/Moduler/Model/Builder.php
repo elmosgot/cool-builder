@@ -6,10 +6,10 @@ class Builder {
 	protected $templatesDir;
 	protected $log;
 
-	public function __construct( $moduler, $templatesDir, &$log ) {
+	public function __construct( $moduler, $templatesDir ) {
 		$this->moduler = $moduler;
 		$this->templatesDir = $templatesDir;
-		$this->log = $log;
+		$this->log = array();
 	}
 	public function buildModule() {
 		$files = $this->readTemplate( $this->getTemplateDir() );
@@ -20,6 +20,7 @@ class Builder {
 		$replaceContent[] = $this->moduler->table;
 		$replaceContent[] = $this->moduler->unit;
 		$this->createStructure( $this->moduler->getModuleDir() . DIRECTORY_SEPARATOR, $files, array( $this->getTemplateDir() => '', 'template' => $this->getName( true ), 'Template' => $this->getName() ), $replaceContent );
+		return $this->log;
 	}
 	protected function readTemplate( $dir = "template/Module/" ) {
 		$files = array();
