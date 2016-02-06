@@ -24,16 +24,17 @@ class Builder {
 	protected function readTemplate( $dir = "template/Module/" ) {
 		$files = array();
 		if( $handle = opendir( $dir ) ) {
-			while( ( $file = readdir( $handle ) ) !== false ) {
-				if( !preg_match( '/^[\.]+$/', $file ) ) {
+			while( ( $entry = readdir( $handle ) ) !== false ) {
+				if( !preg_match( '/^\.{1,2}$/', $entry ) ) {
+					$file = $dir . DIRECTORY_SEPARATOR . $entry;
 					$obj = new \stdClass();
-					$obj->name = $dir . $file;
-					if( is_file( $dir . $file ) ) {
+					$obj->name = $file;
+					if( is_file( $file ) ) {
 						$obj->is_file = 1;
 						$files[] = $obj;
-					} else if( is_dir( $dir . $file ) ) {
+					} else if( is_dir( $file ) ) {
 						$obj->is_file = 0;
-						$obj->files = $this->readTemplate( $dir . $file . "/" );
+						$obj->files = $this->readTemplate( $file );
 						$files[] = $obj;
 					}
 				}
@@ -86,6 +87,6 @@ class Builder {
 		return $lowerCase ? strtolower( $this->moduler->name ) : $this->moduler->name;
 	}
 	protected function getTemplateDir() {
-		return $this->templatesDir . DIRECTORY_SEPARATOR . $this->moduler->template;
+		return implode( DIRECTORY_SEPARATOR, array( $this->templatesDir, $this->moduler->template, 'Module' ) );
 	}
 }
