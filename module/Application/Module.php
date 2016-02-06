@@ -19,6 +19,20 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+		public function onBootstrap(MvcEvent $e)
+
+		$e->getApplication()->getServiceManager()->get('viewhelpermanager')->setFactory('renderElements', function($sm) use ($e) {
+			$viewHelper = new View\Helper\RenderElements($e->getApplication()->getServiceManager());
+			return $viewHelper;
+		});
+		$e->getApplication()->getServiceManager()->get('viewhelpermanager')->setFactory('getChangeTime', function($sm) use ($e) {
+			$viewHelper = new View\Helper\GetChangeTime();
+			return $viewHelper;
+		});
+		$e->getApplication()->getServiceManager()->get('viewhelpermanager')->setFactory('controllerName', function($sm) use ($e) {
+			$viewHelper = new View\Helper\ControllerName($e->getRouteMatch());
+			return $viewHelper;
+		});
     }
 
     public function getConfig()
