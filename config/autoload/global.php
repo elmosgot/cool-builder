@@ -12,5 +12,5 @@
  */
 
 return array(
-    // ...
+    'projects_dir' => '/path/to/projects'
 );

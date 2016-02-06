@@ -1,4 +1,6 @@
 <?php
 return array(
-	'template_dir' => 'data/moduler'
+	'moduler' => array(
+		'templates_dir' => 'data/templates/moduler'
+	)
 );
