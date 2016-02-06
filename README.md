@@ -8,3 +8,15 @@ This builder will helps with creating the structure, Classes and PHPUnit: for mo
 Customization
 ------------
 If you prefer a different setup then the default supplied in this repository you can just replace or add another folder inside the folder 'data/templates'.
+
+Setup
+------------
+In the folder 'config/autoload' you will find a file named 'local.php.dist'. Make a copy of the file in the exact same location and name it 'local.php'. Modify this file to your local environment settings.
+
+```
+return array(
+	'projects_dir' => '/path/to/overwrite'
+);
+```
+
+That's it for now, enjoy!
