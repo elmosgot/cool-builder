@@ -6,6 +6,7 @@ use Zend\View\Model\ViewModel;
 
 use Moduler\Form\ModulerForm;
 use Moduler\Model\Moduler;
+use Moduler\Model\Builder;
 
 class ModulerController extends AbstractActionController {
 	protected $templatesDir;
@@ -30,6 +31,8 @@ class ModulerController extends AbstractActionController {
 				} else {
 					$buildLog[] = "Creating new module...";
 					// Create module
+					$builder = new Builder( $moduler, $this->getTemplatesDir(), $buildLog );
+					$builder->buildModule();
 					// Activate module
 				}
 			}
