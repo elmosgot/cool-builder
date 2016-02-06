@@ -109,7 +109,7 @@ class ModulerForm extends Form
 			if( file_exists( $composer ) ) {
 				$metadata = json_decode( file_get_contents( $composer ), true );
 				// Detect if ZF2 project
-				if( isset( $metadata['require']['zendframework/zendframework'] ) && (float) $metadata['require']['zendframework/zendframework'] > 2 ) {
+				if( isset( $metadata['require']['zendframework/zendframework'] ) && (float) trim( $metadata['require']['zendframework/zendframework'], '<> ~' ) > 2 ) {
 					$projectName = pathinfo( $dir, PATHINFO_FILENAME );
 					$projects[$dir] = $projectName;
 				}
