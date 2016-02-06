@@ -5,3 +5,10 @@ $elements = array( 'template', 'name', 'table', 'unit', 'project', 'csrf', 'buil
 echo $this->renderElements( $form, $elements );
 ?>
 </form>
+<ul>
+<?php
+foreach( $log as $message ) {
+	echo sprintf( '<li>%s</li>', $message );
+}
+ ?>
+</ul>

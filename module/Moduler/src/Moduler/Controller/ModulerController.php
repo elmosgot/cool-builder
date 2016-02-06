@@ -18,6 +18,7 @@ class ModulerController extends AbstractActionController {
 		);
 		$form = new ModulerForm( 'moduler', $data );
 		$request = $this->getRequest();
+		$buildLog = array();
 		if( $request->isPost() ) {
 			$moduler = new Moduler();
 			$form->bind( $moduler );
@@ -27,13 +28,13 @@ class ModulerController extends AbstractActionController {
 				if( is_dir( $moduler->getModuleDir() ) ) {
 					$form->get('csrf')->setMessages( array( 'exists' => 'Module already exists' ) );
 				} else {
-					echo "Creating new module...";
+					$buildLog[] = "Creating new module...";
 					// Create module
 					// Activate module
 				}
 			}
 		}
-		return new ViewModel( array( 'form' => $form ) );
+		return new ViewModel( array( 'form' => $form, 'log' => $buildLog ) );
 	}
 	protected function getTemplatesDir() {
 		if( !$this->templatesDir ) {
