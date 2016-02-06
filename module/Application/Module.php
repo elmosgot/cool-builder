@@ -19,7 +19,6 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-		public function onBootstrap(MvcEvent $e)
 
 		$e->getApplication()->getServiceManager()->get('viewhelpermanager')->setFactory('renderElements', function($sm) use ($e) {
 			$viewHelper = new View\Helper\RenderElements($e->getApplication()->getServiceManager());
