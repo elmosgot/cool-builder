@@ -1,1 +1,6 @@
 <?php
+$form->prepare();
+echo $this->form()->openTag( $form );
+echo $this->render( 'component/element', array( 'form' => $form ) );
+?>
+</form>
