@@ -5,18 +5,22 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\Form\Form;
 
 class RenderElements extends AbstractHelper {
-	private $format = "<div class=\"row\" data-name=\"%s\">\n\t<div class=\"col-xs-12 col-sm-4\">\n\t\t%s\n\t</div>\n\t<div class=\"col-xs-12 col-sm-8\">\n\t\t%s\n</div>\n\t<div class=\"col-xs-12 col-sm-offset-4 col-sm-8\">\n\t\t%s\n\t</div>\n\t<div class=\"col-xs-12 col-sm-offset-4 col-sm-8\">\n\t\t%s\n\t</div>\n</div>\n";
-	
+	protected $format = "<div class=\"row\" data-name=\"%s\">\n\t%s<div class=\"col-xs-12 col-sm-8\">\n\t\t%s\n</div>\n\t<div class=\"col-xs-12 col-sm-offset-4 col-sm-8\">\n\t\t%s\n\t</div>\n\t<div class=\"col-xs-12 col-sm-offset-4 col-sm-8\">\n\t\t%s\n\t</div>\n</div>\n";
+	protected $labelBlock = "<div class=\"col-xs-12 col-sm-4\">\n\t\t%s\n\t</div>\n\t";
+	protected $showLabel = true;
 	/**
 	 * @param Form $form
 	 * @param array $fields
 	 * @param array $overwrite
-	 * 
+	 *
 	 * @return string
 	 */
 	public function __invoke( $form, $fields, $overwrite = null ) {
 		if( $overwrite === null ) {
 			$overwrite = array();
+		}
+		if( !is_array( $fields ) ) {
+			$fields = array( $fields );
 		}
 		$html = '';
 		foreach( $fields as $i => $field ) {
@@ -53,6 +57,9 @@ class RenderElements extends AbstractHelper {
 					break;
 			}
 			$input = $plugin( $element );
+			if( !empty( $prefix ) ) {
+				$prefix = sprintf( $this->labelBlock, $prefix );
+			}
 			$html .= sprintf( $this->format, $element->getName(), $prefix, sprintf( $encaps, $input ), $addon, $this->buildErrorMessage( $element ) );
 		}
 		return $html;
@@ -66,12 +73,16 @@ class RenderElements extends AbstractHelper {
 			case "button":
 			case "hidden":
 			case "checkbox":
+			case "radio":
 				return $this->getView()->plugin('form' . $type );
 				break;
 		}
 		return $this->getView()->plugin('forminput');
 	}
 	private function getLabel( $element ) {
+		if( !$this->showLabel ) {
+			return '';
+		}
 		$label = $element->getOption( 'label' );
 		$required = $element->getAttribute('required') !== null ? '<div class="required"><span>*</span></div>' : '';
 		return !empty( $label ) ? sprintf( '<label>%s</label>%s', $label, $required ) : '';
@@ -80,5 +91,8 @@ class RenderElements extends AbstractHelper {
 		$plugin = $this->getView()->plugin('formelementerrors');
 		$errorFormat = "<div role=\"alert\" class=\"alert alert-danger\"%s>\n\t<span class=\"sr-only\">Error:</span>\n\t%s\n</div>";
 		return sprintf( $errorFormat, count( $element->getMessages() ) > 0 ? '' : ' style="display:none;"', str_replace( array( '[', ']', '&quot;' ), array( '<', '>', '"' ), $plugin( $element ) ) );
+	}
+	public function showLabel( $value = true ) {
+		$this->showLabel = $value;
 	}
 }
