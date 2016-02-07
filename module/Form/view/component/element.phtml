@@ -1,4 +1,16 @@
 <?php
 $elements = array( 'name', 'type', 'length', 'required', 'index' );
-echo $this->renderElements( $form, $elements );
+$renderElements = $this->plugin('renderElements');
+$renderElements->showLabel( false );
 ?>
+<tr>
+<?php
+foreach( $elements as $element ) {
+?>
+	<td>
+		<?php echo $renderElements( $form, $element ); ?>
+	</td>
+<?php
+}
+?>
+</tr>

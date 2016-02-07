@@ -1,6 +1,20 @@
 <?php
 $form->prepare();
 echo $this->form()->openTag( $form );
+?>
+<table>
+	<thead>
+<?php
+$elements = array( 'name', 'type', 'length', 'required', 'index' );
+foreach( $elements as $element ) {
+?>
+		<th><?php echo $form->get( $element )->getLabel(); ?></th>
+<?php
+}
+?>
+	</thead>
+<?php
 echo $this->render( 'component/element', array( 'form' => $form ) );
 ?>
+</table>
 </form>
