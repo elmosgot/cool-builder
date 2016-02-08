@@ -43,9 +43,9 @@ class Bootstrap
 
 		// use ModuleManager to load this module and it's dependencies
 		$baseConfig = array(
-				'module_listener_options' => array(
-						'module_paths' => explode(PATH_SEPARATOR, $zf2ModulePaths),
-				),
+			'module_listener_options' => array(
+				'module_paths' => explode(PATH_SEPARATOR, $zf2ModulePaths),
+			),
 		);
 
 		$config = ArrayUtils::merge($baseConfig, $testConfig);
