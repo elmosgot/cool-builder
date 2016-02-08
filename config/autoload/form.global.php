@@ -1,5 +1,23 @@
 <?php
 return array(
+	'default' => array(
+		'id' => array(
+			'index' => 'primary',
+			'type' => 'INT',
+			'editable' => false
+		),
+		'last_updated' => array(
+			'index' => 'none',
+			'type' => 'DATETIME',
+			'editable' => false
+		),
+		'date' => array(
+			'index' => 'none',
+			'type' => 'TIMESTAMP',
+			'default' => 'CURRENT_TIMESTAMP',
+			'editable' => false
+		)
+	),
 	'mysql' => array(
 		'character' => array(
 			'set' => 'utf8',
