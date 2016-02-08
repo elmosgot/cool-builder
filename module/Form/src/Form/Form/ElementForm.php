@@ -13,6 +13,18 @@ class ElementForm extends Form
 
 		$this->add( array(
 			'type'  => 'Zend\Form\Element\Text',
+			'name' => 'label',
+			'options' => array(
+				'label' => 'Element label',
+			),
+			'attributes' => array(
+				'required' => true,
+				'placeholder' => 'Enter the element label',
+				'size' => '30'
+			),
+		));
+		$this->add( array(
+			'type'  => 'Zend\Form\Element\Text',
 			'name' => 'name',
 			'options' => array(
 				'label' => 'Element name',
@@ -20,7 +32,20 @@ class ElementForm extends Form
 			'attributes' => array(
 				'required' => true,
 				'placeholder' => 'Enter the element name',
-				'size' => '30'
+				'size' => '20'
+			),
+		));
+		$this->add( array(
+			'type'  => 'Zend\Form\Element\Text',
+			'name' => 'default',
+			'options' => array(
+				'label' => 'Default value',
+			),
+			'attributes' => array(
+				'required' => true,
+				'placeholder' => 'Enter the default value',
+				'value' => 'NULL',
+				'size' => '20'
 			),
 		));
 		$this->add( array(
@@ -40,11 +65,11 @@ class ElementForm extends Form
 			'type'  => 'Zend\Form\Element\Text',
 			'name' => 'length',
 			'options' => array(
-				'label' => 'DB Table',
+				'label' => 'Type length',
 			),
 			'attributes' => array(
-				'placeholder' => 'Enter length of the value',
-				'size' => '5'
+				'placeholder' => 'Enter max. length',
+				'size' => '15'
 			),
 		));
 		$this->add( array(
@@ -54,11 +79,16 @@ class ElementForm extends Form
 				'label' => 'Required',
 				'checked_value' => '1',
 				'unchecked_value' => '0'
-			),
-			'attributes' => array(
-				'placeholder' => 'Enter testsuite name',
-				'size' => '30'
-			),
+			)
+		));
+		$this->add( array(
+			'type'  => 'Zend\Form\Element\Checkbox',
+			'name' => 'editable',
+			'options' => array(
+				'label' => 'Editable',
+				'checked_value' => '1',
+				'unchecked_value' => '0'
+			)
 		));
 		$this->add( array(
 			'type' => 'Zend\Form\Element\Select',

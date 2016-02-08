@@ -5,7 +5,7 @@ echo $this->form()->openTag( $form );
 <table>
 	<thead>
 <?php
-$elements = array( 'name', 'type', 'length', 'required', 'index' );
+$elements = array( 'label', 'name', 'type', 'length', 'default', 'required', 'index' );
 foreach( $elements as $element ) {
 ?>
 		<th><?php echo $form->get( $element )->getLabel(); ?></th>
