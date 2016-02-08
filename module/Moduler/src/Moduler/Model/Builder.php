@@ -1,6 +1,9 @@
 <?php
 namespace Moduler\Model;
 
+use Moduler\Model\Parser\Raw;
+use Moduler\Model\Parser\Vector;
+
 class Builder {
 	protected $moduler;
 	protected $templatesDir;
@@ -21,6 +24,22 @@ class Builder {
 		$replaceContent[] = $this->moduler->unit;
 		$this->createStructure( $this->moduler->getModuleDir() . DIRECTORY_SEPARATOR, $files, array( $this->getTemplateDir() => '', 'template' => $this->getName( true ), 'Template' => $this->getName() ), $replaceContent );
 		return $this->log;
+	}
+	public function activate() {
+		$file = $this->moduler->getApplicationConfig();
+		if( $file !== null ) {
+			$config = file_get_contents( $file );
+			$vector = new Vector( 0, mb_strlen( $config ) );
+			$root = new Raw( $config, $vector, 'root' );
+			$parser = new PhpParser();
+			$parser->parse( $root );
+			echo "<pre>";
+			echo str_replace( '<', '&lt;', $root->toString() );
+			die();
+			/*echo "<pre>";
+			$root->printClean();
+			die();*/
+		}
 	}
 	protected function readTemplate( $dir = "template/Module/" ) {
 		$files = array();

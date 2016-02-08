@@ -44,4 +44,10 @@ class Moduler implements InputFilterAwareInterface {
 	public function getModuleDir() {
 		return realpath( $this->project . DIRECTORY_SEPARATOR . 'module' ) . DIRECTORY_SEPARATOR . $this->name;
 	}
+	public function getApplicationConfig( $config = 'application.config.php' ) {
+		$file = realpath( $this->project . DIRECTORY_SEPARATOR . 'config/' ) . DIRECTORY_SEPARATOR . $config;
+		if( file_exists( $file ) ) {
+			return $file;
+		}
+	}
 }
