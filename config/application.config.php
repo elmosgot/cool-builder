@@ -11,7 +11,9 @@ return array(
 		'Application',
 		'Form',
 		'Moduler',
-		'Core'
+		'Core',
+		'Parser',
+		'PhpParser'
 	),
 
 	// These are various options for the listeners attached to the ModuleManager

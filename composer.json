@@ -1,14 +1,21 @@
 {
-    "name": "zendframework/skeleton-application",
+    "name": "elmosgot/cool-builder",
+	"version": "0.3",
     "description": "Skeleton Application for ZF2",
     "license": "BSD-3-Clause",
     "keywords": [
         "framework",
         "zf2"
     ],
+    "repositories" : [ {
+        "type" : "vcs",
+        "url" : "https://github.com/elmosgot/code-parser"
+      } ],
     "homepage": "http://framework.zend.com/",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.5",
-        "zendframework/zendframework": "~2.5"
+        "zendframework/zendframework": "~2.5",
+        "elmosgot/code-parser": "dev-master"
     }
 }
