@@ -35,12 +35,17 @@ class Raw {
 	public function getParent() {
 		return $this->parent;
 	}
-
 	/**
 	 * @return string
 	 */
 	public function getNodeCode() {
 		return $this->nodeCode;
+	}
+	/**
+	 * @return string
+	 */
+	public function getNodeName() {
+		return $this->nodeName;
 	}
 	/**
 	 * @param $raw Raw
@@ -79,6 +84,14 @@ class Raw {
 	 */
 	public function lookBehind() {
 		return $this->lookBehind;
+	}
+	public function printTree( $indent = 0 ) {
+		echo str_repeat( "\t", $indent ) . sprintf( "%s (%s - %s)\n", get_class( $this ), $this->getNodeName(), $this->getVector()->length() );
+		if( is_array( $this->children ) ) {
+			foreach( $this->children as $child ) {
+				$child->printTree( $indent+1 );
+			}
+		}
 	}
 	public function printClean( $print = true ) {
 		$code = $this->nodeCode;
