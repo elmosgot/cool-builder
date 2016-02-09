@@ -10,7 +10,8 @@ return array(
 	'modules' => array(
 		'Application',
 		'Form',
-		'Moduler'
+		'Moduler',
+		'Core'
 	),
 
 	// These are various options for the listeners attached to the ModuleManager
