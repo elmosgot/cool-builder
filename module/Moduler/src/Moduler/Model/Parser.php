@@ -24,6 +24,7 @@ class Parser {
 					if( ( $rewind = $this->testPattern( $pattern[0], $search ) ) !== false ) {
 						$name = '';
 						if( $codeBlock->lookBehind() ) {
+							//echo "Backward searching...<br/>\n";
 							$whitespace = 0;
 							for( $j = $i; $j > -1; $j-- ) {
 								$char = mb_substr( $search, $j, 1 );
@@ -40,7 +41,7 @@ class Parser {
 						} else {
 							$offset = ($i+1);
 						}
-						echo str_repeat( "\t", $indent ) . sprintf( '<b>%s</b>: %s (%s)<br/>', $className, $name, $offset );
+						//echo str_repeat( "\t", $indent ) . sprintf( '<b>%s</b>: %s (%s)<br/>', $className, $name, $offset );
 						for( $j = 0; $j < $raw->getVector()->getEnd(); $j++ ) {
 							$buffer = mb_substr( $raw->getNodeCode(), $offset, $j );
 							// Close
@@ -56,9 +57,10 @@ class Parser {
 								$raw->addChild( $child );
 								$i = $vector->getEnd();
 								if( $child->isParsable() ) {
+									//echo str_repeat( "\t", $indent ) . sprintf( "Parsing child '%s'...<br/>\n", get_class( $child ) );
 									$this->parse( $child, (-1*$rewind), ($indent+1) );
 								} else {
-									echo str_repeat( "\t", $indent ) . "Do not parse...<br/>\n";
+									//echo str_repeat( "\t", $indent ) . "Do not parse...<br/>\n";
 								}
 								break;
 							}
