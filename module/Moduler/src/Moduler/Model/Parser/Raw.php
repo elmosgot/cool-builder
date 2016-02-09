@@ -10,6 +10,7 @@ class Raw {
 	protected $pattern;
 	protected $parsable;
 	protected $lookBehind;
+	protected $updated = false;
 
 	/**
 	 * @param $name string
@@ -56,6 +57,12 @@ class Raw {
 		$this->length = count( $this->children );
 	}
 	/**
+	 * @return array
+	 */
+	public function getChildren() {
+		return $this->children;
+	}
+	/**
 	 * @return int
 	 */
 	public function newLines() {
@@ -78,6 +85,12 @@ class Raw {
 	 */
 	public function isParsable() {
 		return $this->parsable;
+	}
+	/**
+	 * @return bool
+	 */
+	public function isUpdated() {
+		return $this->updated;
 	}
 	/**
 	 * @return bool
@@ -109,7 +122,7 @@ class Raw {
 		$i = 0;
 		$str = '';
 		$format = '%2$s';//str_repeat( "\t", $indent ) . "%s: '''%s'''\n";
-		if( is_array( $this->children ) ) {
+		if( !$this->updated && is_array( $this->children ) ) {
 			foreach( $this->children as $child ) {
 				$str .= sprintf( $format, $child->getNodeName(), $child->toString( $indent+1 ) );
 			}

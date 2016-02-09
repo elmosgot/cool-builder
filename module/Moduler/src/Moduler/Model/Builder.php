@@ -3,6 +3,7 @@ namespace Moduler\Model;
 
 use Moduler\Model\Parser\Raw;
 use Moduler\Model\Parser\Vector;
+use Moduler\Model\Parser\Path;
 
 class Builder {
 	protected $moduler;
@@ -33,10 +34,16 @@ class Builder {
 			$root = new Raw( $config, $vector, 'root' );
 			$parser = new PhpParser();
 			$parser->parse( $root );
+			$path = new Path( $root );
+			$result = $path->query( '//modules' );
+			$result->push( 'Core' );
+
 			echo "<pre>";
+			echo $result->getNodeCode();
 			echo str_replace( '<', '&lt;', $root->printTree() );
 			echo "\n\n";
 			echo str_replace( '<', '&lt;', $root->toString() );
+			echo "\n\n";
 			die();
 			/*echo "<pre>";
 			$root->printClean();
