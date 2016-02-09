@@ -105,18 +105,16 @@ class Raw {
 			print_r( $this );
 		}
 	}
-	public function toString() {
+	public function toString( $indent = 0 ) {
 		$i = 0;
 		$str = '';
+		$format = '%2$s';//str_repeat( "\t", $indent ) . "%s: '''%s'''\n";
 		if( is_array( $this->children ) ) {
 			foreach( $this->children as $child ) {
-				$length = $child->getVector()->getStart() - $i;
-				if( $i !== $child->getVector()->getStart() ) {
-					$str .= mb_substr( $this->nodeCode, $i, $length );
-				}
-				$str .= $child->getNodeCode();
-				$i = $child->getVector()->getEnd();
+				$str .= sprintf( $format, $child->getNodeName(), $child->toString( $indent+1 ) );
 			}
+		} else {
+			$str = sprintf( $format, $this->getNodeName(), $this->getNodeCode() );
 		}
 		return $str;
 	}

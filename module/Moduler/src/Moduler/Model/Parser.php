@@ -14,6 +14,7 @@ class Parser {
 	 * @param $raw Raw
 	 */
 	public function parse( &$raw, $forward = 0, $indent = 0 ) {
+		$textPos = 0;
 		for( $i = ($forward+1); $i < $raw->getVector()->getEnd(); $i++ ) {
 			$search = mb_substr( $raw->getNodeCode(), 0, $i );
 			foreach( $this->codeBlocks as $codeBlock ) {
@@ -41,6 +42,12 @@ class Parser {
 						} else {
 							$offset = ($i+1);
 						}
+						if( $textPos < $offset ) {
+							// Create Text node for rest of the content
+							$vector = new Vector( $textPos, $i+$rewind );
+							$code = $vector->getPart( $raw->getNodeCode() );
+							$raw->addChild( new Raw( $code, $vector, 'Text' ) );
+						}
 						//echo str_repeat( "\t", $indent ) . sprintf( '<b>%s</b>: %s (%s)<br/>', $className, $name, $offset );
 						for( $j = 0; $j < $raw->getVector()->getEnd(); $j++ ) {
 							$buffer = mb_substr( $raw->getNodeCode(), $offset, $j );
@@ -55,7 +62,7 @@ class Parser {
 									$child = new $className( $code, $vector, $name );
 								}
 								$raw->addChild( $child );
-								$i = $vector->getEnd();
+								$textPos = $i = $vector->getEnd();
 								if( $child->isParsable() ) {
 									//echo str_repeat( "\t", $indent ) . sprintf( "Parsing child '%s'...<br/>\n", get_class( $child ) );
 									$this->parse( $child, (-1*$rewind), ($indent+1) );
@@ -68,6 +75,12 @@ class Parser {
 					}
 				}
 			}
+		}
+		if( $textPos < $raw->getVector()->getEnd() ) {
+			// Create Text node for rest of the content
+			$vector = new Vector( $textPos, $raw->getVector()->getEnd() );
+			$code = $vector->getPart( $raw->getNodeCode() );
+			$raw->addChild( new Raw( $code, $vector, 'Text' ) );
 		}
 	}
 	protected function testPattern( $pattern, &$haystack ) {

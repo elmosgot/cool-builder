@@ -35,6 +35,8 @@ class Builder {
 			$parser->parse( $root );
 			echo "<pre>";
 			echo str_replace( '<', '&lt;', $root->printTree() );
+			echo "\n\n";
+			echo str_replace( '<', '&lt;', $root->toString() );
 			die();
 			/*echo "<pre>";
 			$root->printClean();
