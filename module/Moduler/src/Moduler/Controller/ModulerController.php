@@ -25,9 +25,6 @@ class ModulerController extends AbstractActionController {
 			$form->bind( $moduler );
 			$form->setData( $request->getPost() );
 			if( $form->isValid() ) {
-				/*$builder = new Builder( $moduler, $this->getTemplatesDir() );
-				$builder->activate();
-				die();*/
 				// Verify module doesn't exist
 				if( is_dir( $moduler->getModuleDir() ) ) {
 					$form->get('csrf')->setMessages( array( 'exists' => 'Module already exists' ) );
@@ -37,7 +34,7 @@ class ModulerController extends AbstractActionController {
 					$builder = new Builder( $moduler, $this->getTemplatesDir() );
 					$buildLog = array_merge( $buildLog, $builder->buildModule() );
 					// Activate module
-					//$builder->activate();
+					$builder->activate();
 				}
 			}
 		}
