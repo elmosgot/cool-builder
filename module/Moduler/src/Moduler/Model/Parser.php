@@ -2,6 +2,7 @@
 namespace Moduler\Model;
 
 use Moduler\Model\Parser\Raw;
+use Moduler\Model\Parser\Regex;
 use Moduler\Model\Parser\Vector;
 
 class Parser {
@@ -12,7 +13,7 @@ class Parser {
 	/**
 	 * @param $raw Raw
 	 */
-	public function parse( &$raw, $forward = 0 ) {
+	public function parse( &$raw, $forward = 0, $indent = 0 ) {
 		for( $i = ($forward+1); $i < $raw->getVector()->getEnd(); $i++ ) {
 			$search = mb_substr( $raw->getNodeCode(), 0, $i );
 			foreach( $this->codeBlocks as $codeBlock ) {
@@ -21,7 +22,6 @@ class Parser {
 					$pattern = $codeBlock->getPattern();
 					// Open
 					if( ( $rewind = $this->testPattern( $pattern[0], $search ) ) !== false ) {
-						$offset = ($i+1);
 						$name = '';
 						if( $codeBlock->lookBehind() ) {
 							$whitespace = 0;
@@ -35,10 +35,12 @@ class Parser {
 								}
 							}
 							$lookBehind = ($j+1);
-							$name = mb_substr( $search, $lookBehind, $offset-$lookBehind );
+							$name = trim( mb_substr( $search, $lookBehind, ($i+$rewind)-$lookBehind ), "\"' " );
 							$offset = $lookBehind;
+						} else {
+							$offset = ($i+1);
 						}
-						echo sprintf( '<b>%s</b>: %s (%s)<br/>', $className, $name, $offset );
+						echo str_repeat( "\t", $indent ) . sprintf( '<b>%s</b>: %s (%s)<br/>', $className, $name, $offset );
 						for( $j = 0; $j < $raw->getVector()->getEnd(); $j++ ) {
 							$buffer = mb_substr( $raw->getNodeCode(), $offset, $j );
 							// Close
@@ -46,11 +48,17 @@ class Parser {
 								$className = get_class($codeBlock);
 								$vector = new Vector( $i+$rewind, $j+$offset );
 								$code = $vector->getPart( $raw->getNodeCode() );
-								$child = new $className( $code, $vector );
+								if( empty( $name ) ) {
+									$child = new $className( $code, $vector );
+								} else {
+									$child = new $className( $code, $vector, $name );
+								}
 								$raw->addChild( $child );
 								$i = $vector->getEnd();
 								if( $child->isParsable() ) {
-									$this->parse( $child, (-1*$rewind) );
+									$this->parse( $child, (-1*$rewind), ($indent+1) );
+								} else {
+									echo str_repeat( "\t", $indent ) . "Do not parse...<br/>\n";
 								}
 								break;
 							}
@@ -65,16 +73,22 @@ class Parser {
 			$pattern = array( $pattern );
 		}
 		foreach( $pattern as $patt ) {
-			if( $patt === '\n' ) {
-				$size = 1;
-				$patt = '(\r\n\|\r|\n)';
+			if( $patt instanceof Regex ) {
+				$rewind = -1*$patt->getSize();
+				$hit = $patt->getPattern();
 			} else {
-				$size = strlen( $patt );
+				if( $patt === '\n' ) {
+					$size = 1;
+					$patt = '(\r\n\|\r|\n)';
+				} else {
+					$size = strlen( $patt );
+				}
+				$patt = preg_replace( '/([\$\^\.\,\/\{\}\(\)\[\]\*\\\])/', '\\\$1', $patt );
+				$rewind = -1*$size;
+				$hit = sprintf( '/%s/', $patt );
 			}
-			$patt = preg_replace( '/([\$\^\.\,\/\{\}\(\)\[\]\*\\\])/', '\\\$1', $patt );
-			$rewind = -1*$size;
 			$test = mb_substr( $haystack, $rewind );
-			$compare = preg_match( sprintf( '/%s/', $patt ), $test );
+			$compare = preg_match( $hit, $test );
 			if( $compare ) {
 				return $rewind;
 			}
