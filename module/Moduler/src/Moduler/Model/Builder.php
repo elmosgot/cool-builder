@@ -1,9 +1,10 @@
 <?php
 namespace Moduler\Model;
 
-use Moduler\Model\Parser\Raw;
-use Moduler\Model\Parser\Vector;
-use Moduler\Model\Parser\Path;
+use PhpParser\Model\PhpParser;
+use Parser\Model\Raw;
+use Parser\Model\Vector;
+use Parser\Model\Path;
 
 class Builder {
 	protected $moduler;
