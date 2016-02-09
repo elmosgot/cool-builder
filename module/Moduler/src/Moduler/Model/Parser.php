@@ -7,8 +7,6 @@ use Moduler\Model\Parser\Vector;
 
 class Parser {
 	protected $codeBlocks;
-	protected $whitespace = '/ \t/';
-	protected $lineEnd = '/\n\r/';
 
 	/**
 	 * @param $raw Raw

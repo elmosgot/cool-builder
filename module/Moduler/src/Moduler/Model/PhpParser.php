@@ -11,10 +11,6 @@ use Moduler\Model\Parser\Type\DoubleString;
 use Moduler\Model\Parser\Type\SingleString;
 
 class PhpParser extends Parser {
-	protected $whitespace = '/ \t/';
-	protected $newline = '/(\r\n|\n|\r)/';
-	protected $lineEnd = '/;/';
-
 	public function __construct() {
 		$vector = new Vector( 0, 1 );
 		$codeBlocks = array(
